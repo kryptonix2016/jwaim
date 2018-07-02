@@ -10,10 +10,17 @@ using namespace libconfig;
 
 JWSettings::JWSettings()
 {
-    _m_cfg.setOptions(Setting::OptionSemicolonSeparators
-            | Setting::OptionColonAssignmentForGroups
-            | Setting::OptionOpenBraceOnSeparateLine);
-
+    #if LIBCONFIGXX_VER_MAJOR==1
+        #if LIBCONFIGXX_VER_MINOR<7
+            _m_cfg.setOptions(Setting::OptionSemicolonSeparators
+                | Setting::OptionColonAssignmentForGroups
+                | Setting::OptionOpenBraceOnSeparateLine);
+        #else
+            _m_cfg.setOptions(Config::OptionSemicolonSeparators
+                | Config::OptionColonAssignmentForGroups
+                | Config::OptionOpenBraceOnSeparateLine);
+        #endif
+    #endif
     try {
         _m_cfg.readFile(m_output_file);
     } catch(const FileIOException &fioex) {
